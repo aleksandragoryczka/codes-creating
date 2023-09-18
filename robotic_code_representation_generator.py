@@ -34,6 +34,8 @@ class RoboticCodeRepresentationGenerator:
             raise KeyError(f"Command '{command}' not found in RCR codes")
 
     def build_tree(self) -> Node:
+        if not self.issued_commands:
+            raise ValueError("No issued commands provided")
         count_dict = collections.Counter(self.issued_commands)
         nodes = [Node(word, freq) for word, freq in count_dict.items()]
         while len(nodes) > 1:
