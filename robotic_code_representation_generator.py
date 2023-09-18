@@ -1,3 +1,11 @@
+"""
+Robotic Code Representation Generator
+
+This module defines a class for generating Robotic Code Representations (RCR) from issued commands.
+Author: Aleksandra Goryczka
+GitHub: https://github.com/aleksandragoryczka/codes-creating
+"""
+
 import collections
 from typing import List
 
@@ -11,13 +19,19 @@ class Node:
 
 
 class RoboticCodeRepresentationGenerator:
+    rcr_codes = {}
+
     def __init__(self, issued_commands: List[str]):
         self.issued_commands = issued_commands
         self.root = self.build_tree()
-        self.rcr_codes = self.generate_rcr_codes('')
 
     def get_rcr(self, command: str) -> str:
-        return self.rcr_codes[command]
+        if not self.rcr_codes:
+            self.rcr_codes = self.generate_rcr_codes('')
+        if command in self.rcr_codes.keys():
+            return '1' if len(self.rcr_codes) == 1 else self.rcr_codes[command]
+        else:
+            raise KeyError(f"Command '{command}' not found in RCR codes")
 
     def build_tree(self) -> Node:
         count_dict = collections.Counter(self.issued_commands)
